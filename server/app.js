@@ -1,3 +1,88 @@
+import { Hono } from "jsr:@hono/hono@4.6.5";
+import { logger } from "jsr:@hono/hono/logger";
+const app = new Hono();
+
+app.use(logger());
+
+app.get("/courses", (c) => {
+  const wsd = {id: 1,
+  name: "Web Software Development",
+  }
+  const dad = {id: 2,
+  name: "Device-Agnostic Design",
+  }
+  return c.json({courses: [wsd, dad]});
+});
+app.get("/", (c) => c.text(`Hello world!`));
+
+app.get("/courses/:id", (c) => {
+  const course_id = c.req.param("id");
+  const course = {
+      id: course_id,
+      name: "Course Name"
+  };
+  return c.json({course: course})
+});
+
+app.post("/courses", async (c) => {
+  // curl -X POST -H "Content-Type: application/json" -d '{"name": "Course Name"}' localhost:8000
+  const course_name = await c.req.json();
+  const course_json ={id: 3, name: course_name.name};
+  return c.json({course: course_json})
+});
+
+app.get("/courses/:id/topics", (c) => {
+  const course_id = c.req.param("id");
+  const topic1 = {
+    id: 1,
+    name: "Topic 1"
+  };
+  const topic2 = {
+    id: 2,
+    name: "Topic 2"
+  };
+  return c.json({topics: [topic1, topic2]})
+});
+
+app.get("/courses/:cId/topics/:tId/posts", (c) => {
+  const post1 = {
+    id: 1,
+    title: "Post 1"
+  };
+  const post2 = {
+    id: 2,
+    title: "Post 2"
+  };
+  return c.json({posts: [post1, post2]})
+});
+
+app.get("/courses/:cId/topics/:tId/posts/:pId", (c) => {
+  const pId = c.req.param("pId");
+  const post_json = {
+    id: pId,
+    title: "Post Title"
+  }
+  const answer1 = {
+    id: 1,
+    content: "Answer 1"
+  };
+  const answer2 = {
+    id: 2,
+    content: "Answer 2"
+  };
+  return c.json({
+    post: post_json,
+    answers: [answer1, answer2]
+  })
+});
+
+
+
+
+
+export default app;
+
+
 // import { Hono } from "@hono/hono";
 // import { cors } from "@hono/hono/cors";
 // import { logger } from "@hono/hono/logger";
@@ -52,17 +137,6 @@
 //app.get("/*", handleRequest);
 
 //export default app;
-import { Hono } from "jsr:@hono/hono@4.6.5";
-import { logger } from "jsr:@hono/hono/logger";
-const app = new Hono();
-
-app.use(logger());
-
-app.get("/", (c) => c.text(`Hello world!`));
-
-
-
-
  //   if (input.property) {
  //     const returning = input.property;
  //     return c.json(returning)
@@ -70,7 +144,6 @@ app.get("/", (c) => c.text(`Hello world!`));
  //   } else {
  //     return c.json({})
 
-export default app;
 
 // const app = new Hono();
 
