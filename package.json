@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@playwright/test": "^1.49.1",
+    "@sveltejs/adapter-auto": "^3.3.1"
+  }
+}
